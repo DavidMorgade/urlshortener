@@ -5,36 +5,34 @@ import (
 
 	"math/rand"
 
-	"time"
-
 	"github.com/gin-gonic/gin"
+	"github.com/urlshortener/db"
+	"github.com/urlshortener/routes"
 )
 
 var urlMap = make(map[string]string)
 
 func main() {
 
-	rand.Seed(time.Now().UnixNano())
+	db.InitDB()
 
-	r := gin.Default()
+	server := gin.Default()
 
-	r.POST("/shorten", shortenURL)
+	routes.RegisterRoutes(server)
 
-	r.GET("/:shortURL", redirectURL)
-
-	r.Run(":8080")
+	server.Run(":8080")
 
 }
 
-func shortenURL(c *gin.Context) {
+func shortenURL(context *gin.Context) {
 
-	longURL := c.PostForm("url")
+	longURL := context.PostForm("url")
 
 	shortURL := generateShortURL()
 
 	urlMap[shortURL] = longURL
 
-	c.JSON(http.StatusOK, gin.H{"shortURL": shortURL})
+	context.JSON(http.StatusOK, gin.H{"shortURL": shortURL})
 
 }
 
