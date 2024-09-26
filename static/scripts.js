@@ -2,7 +2,7 @@ document.getElementById('url-form').addEventListener('submit', async function(ev
   const domainWithoutHttp = window.location.origin.replace('http://', '').replace('https://', '');
   event.preventDefault();
   const urlInput = document.getElementById('url-input').value;
-  const response = await fetch('/shorten', {
+  const response = await fetch('/api/shorten', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
