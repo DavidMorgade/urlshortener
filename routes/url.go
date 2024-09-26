@@ -36,6 +36,13 @@ func createShortURLOnDatabase(context *gin.Context) {
 
 	url.ShortURL = utils.GenerateShortURL()
 
+	urlExists = url.CheckIfShortURLExists()
+
+	for urlExists {
+		url.ShortURL = utils.GenerateShortURL()
+		urlExists = url.CheckIfShortURLExists()
+	}
+
 	err = url.SaveURL()
 
 	if err != nil {

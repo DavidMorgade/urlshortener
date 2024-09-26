@@ -19,6 +19,12 @@ func main() {
 	server := gin.Default()
 
 	routes.RegisterRoutes(server)
+	server.Static("/static", "./static")
+	server.LoadHTMLGlob("static/*.html")
+
+	server.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", nil)
+	})
 
 	server.Run(":8080")
 

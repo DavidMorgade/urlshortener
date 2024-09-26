@@ -105,3 +105,17 @@ func (u *URL) CheckIfRealURLExists() bool {
 
 	return true
 }
+
+func (u *URL) CheckIfShortURLExists() bool {
+	query := "SELECT id FROM urls WHERE short_url = ?"
+
+	row := db.DB.QueryRow(query, u.ShortURL)
+
+	err := row.Scan(&u.ID)
+
+	if err != nil {
+		return false
+	}
+
+	return true
+}
