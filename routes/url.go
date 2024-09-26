@@ -21,30 +21,39 @@ func createShortURLOnDatabase(context *gin.Context) {
 		return
 	}
 
-	err = url.SaveURL()
+	urlExists := url.CheckIfRealURLExists()
+
+	if urlExists {
+		shortURL, err := url.GetShortURL()
+		fmt.Println("URL Exists:", url.RealURL)
+		if err != nil {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "Error getting real URL"})
+			return
+		}
+		context.JSON(http.StatusOK, gin.H{"shortURL": shortURL, "realURL": url.RealURL})
+		return
+	}
 
 	url.ShortURL = utils.GenerateShortURL()
 
-	fmt.Println("Real URL: ", url.RealURL)
+	err = url.SaveURL()
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error saving URL"})
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"shortURL": url.ShortURL})
+	context.JSON(http.StatusOK, gin.H{"shortURL": url.ShortURL, "realURL": url.RealURL})
 
-}
-
-func generateShortURL() {
-	panic("unimplemented")
 }
 
 func redirectURL(c *gin.Context) {
 
 	fmt.Println("Redirecting URL")
 
-	shortURL := c.Param("shorturl")
+	shortURL := c.Param("shortURL")
+
+	fmt.Println("Short URL: ", shortURL)
 
 	var url models.URL
 
@@ -65,5 +74,19 @@ func redirectURL(c *gin.Context) {
 	c.Redirect(http.StatusMovedPermanently, realURL)
 
 	fmt.Println("Redirecting to: ", realURL)
+
+}
+
+// route that gets all the URLs from the databas
+func getAllURLs(c *gin.Context) {
+
+	urls, err := models.GetAllURLS()
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error getting all URLs"})
+		return
+	}
+
+	c.JSON(http.StatusOK, urls)
 
 }

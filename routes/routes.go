@@ -7,4 +7,5 @@ import (
 func RegisterRoutes(server *gin.Engine) {
 	server.POST("/shorten", createShortURLOnDatabase)
 	server.GET("/:shortURL", redirectURL)
+	server.GET("/urls", getAllURLs)
 }
