@@ -83,17 +83,3 @@ func redirectURL(c *gin.Context) {
 	fmt.Println("Redirecting to: ", realURL)
 
 }
-
-// route that gets all the URLs from the databas
-func getAllURLs(c *gin.Context) {
-
-	urls, err := models.GetAllURLS()
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error getting all URLs"})
-		return
-	}
-
-	c.JSON(http.StatusOK, urls)
-
-}
