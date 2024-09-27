@@ -14,6 +14,8 @@ var urlMap = make(map[string]string)
 
 func main() {
 
+	gin.SetMode(gin.ReleaseMode)
+
 	db.InitDB()
 
 	server := gin.Default()
@@ -21,12 +23,7 @@ func main() {
 	routes.RegisterRoutes(server)
 	server.Static("/static", "./static")
 	server.LoadHTMLGlob("static/*.html")
-
-	server.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", nil)
-	})
-
-	server.Run(":8080")
+	server.Run(":8000")
 
 }
 
