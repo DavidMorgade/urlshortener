@@ -70,7 +70,7 @@ func redirectURL(c *gin.Context) {
 
 	fmt.Println("Real URL: ", realURL)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "Short URL not found"})
+		c.HTML(http.StatusNotFound, "404.html", nil)
 		return
 	}
 	// Ensure the realURL starts with http:// or https://
