@@ -1,4 +1,9 @@
 document.getElementById('url-form').addEventListener('submit', async function(event) {
+  const shortUrlElement = document.getElementById('short-url');
+  const resultDiv = document.getElementById('result');
+  const errorElement = document.getElementById('error');
+  resultDiv.classList.add('hidden');
+  errorElement.classList.add('hidden');
   const domainWithoutHttp = window.location.origin.replace('http://', '').replace('https://', '');
   event.preventDefault();
   const urlInput = document.getElementById('url-input').value;
@@ -10,7 +15,6 @@ document.getElementById('url-form').addEventListener('submit', async function(ev
     body: JSON.stringify({ real_url: urlInput }),
   }).catch((error) => {
     console.error('Error:', error);
-    const errorElement = document.getElementById('error');
     errorElement.classList.remove('hidden');
   }).finally(() => {
     console.log('Request completed')
@@ -18,14 +22,16 @@ document.getElementById('url-form').addEventListener('submit', async function(ev
   console.log(response);
   const result = await response.json();
   if (response.ok) {
-    const shortUrlElement = document.getElementById('short-url');
+    errorElement.classList.add('hidden');
+    resultDiv.classList.remove('hidden');
     shortUrlElement.href = result.shortURL;
     shortUrlElement.textContent = domainWithoutHttp + "/" + result.shortURL;
     const resultElement = document.getElementById('result');
     resultElement.classList.remove('hidden');
     resultElement.classList.add('flex')
   } else {
-    alert('Error shortening URL');
+    errorElement.classList.remove('hidden');
+    errorElement.textContent = result.error;
   }
 });
 

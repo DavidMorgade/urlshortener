@@ -21,6 +21,15 @@ func createShortURLOnDatabase(context *gin.Context) {
 		return
 	}
 
+	urlIsValid := utils.CheckIfValidURL(&url)
+
+	fmt.Println("URL is valid:", urlIsValid)
+
+	if !urlIsValid {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid URL"})
+		return
+	}
+
 	urlExists := url.CheckIfRealURLExists()
 
 	if urlExists {
