@@ -31,7 +31,7 @@ func shortenURL(context *gin.Context) {
 
 	longURL := context.PostForm("url")
 
-	shortURL := generateShortURL()
+	shortURL := generateShortURL()A
 
 	urlMap[shortURL] = longURL
 
