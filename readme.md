@@ -11,7 +11,7 @@ This is a URL shortener application that stores URLs in a SQLite3 database and r
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/urlshortener.git
+    git clone https://github.com/DavidMorgade/urlshortener.git
     cd urlshortener
     ```
 
